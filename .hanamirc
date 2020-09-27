@@ -1,0 +1,3 @@
+project=hey_listen_me
+test=rspec
+template=slim
