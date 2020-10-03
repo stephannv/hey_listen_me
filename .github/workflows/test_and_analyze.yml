@@ -1,0 +1,67 @@
+env:
+  RUBY_VERSION: 2.7.1
+
+name: Analyze & Test Code
+on: [pull_request]
+jobs:
+  code_analyze:
+    name: Rubocop
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Install Rubocop
+        run: gem install rubocop rubocop-rails rubocop-performance
+      - name: Analyze code
+        run: rubocop
+
+  test_code:
+    name: RSpec
+    needs: code_analyze
+    runs-on: ubuntu-18.04
+    services:
+      postgres:
+        image: postgres:latest
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Setup Node
+        uses: actions/setup-node@v1
+
+      - name: Install postgres client
+        run: sudo apt-get install libpq-dev
+
+      - name: Install Ruby dependencies
+        run: |
+          gem install bundler
+          bundler install
+      - name: Install Yarn dependencies
+        run: yarn install --pure-lockfile
+
+      - name: Create database
+        run: |
+          cp config/database.ci.yml config/database.yml
+          cat config/database.yml
+          HANAMI_ENV=test bundle exec hanami db prepare
+
+      - name: Run tests
+        run: bundle exec rspec spec
+
+      - name: Upload coverage results
+        uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage
