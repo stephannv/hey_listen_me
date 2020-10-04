@@ -1,4 +1,4 @@
-RSpec.describe ImportRawInfos, type: :service do
+RSpec.describe ProcessRawInfos, type: :service do
   subject { described_class.new(inputs) }
 
   describe 'Inputs' do
@@ -25,10 +25,10 @@ RSpec.describe ImportRawInfos, type: :service do
     end
 
     it 'import each raw data' do
-      expect(ImportRawInfo).to receive(:call)
+      expect(ProcessRawInfo).to receive(:call)
         .with(data_source: data_source, external_id: 'abc', data: raw_data_1, ignored_keys_for_checksum: keys)
         .once
-      expect(ImportRawInfo).to receive(:call)
+      expect(ProcessRawInfo).to receive(:call)
         .with(data_source: data_source, external_id: 'def', data: raw_data_2, ignored_keys_for_checksum: keys)
         .once
 

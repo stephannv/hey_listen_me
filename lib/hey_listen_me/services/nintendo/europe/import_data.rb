@@ -1,9 +1,9 @@
-require_relative '../../import_raw_infos'
+require_relative '../../process_raw_infos'
 
 module Nintendo
   module Europe
     class ImportData < Actor
-      play FetchData, ::ImportRawInfos
+      play FetchData, ::ProcessRawInfos
     end
   end
 end

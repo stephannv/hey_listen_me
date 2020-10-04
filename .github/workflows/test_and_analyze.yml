@@ -13,7 +13,7 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
       - name: Install Rubocop
-        run: gem install rubocop rubocop-rails rubocop-performance
+        run: gem install rubocop
       - name: Analyze code
         run: rubocop
 
@@ -37,8 +37,6 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
-      - name: Setup Node
-        uses: actions/setup-node@v1
 
       - name: Install postgres client
         run: sudo apt-get install libpq-dev
@@ -47,13 +45,10 @@ jobs:
         run: |
           gem install bundler
           bundler install
-      - name: Install Yarn dependencies
-        run: yarn install --pure-lockfile
 
       - name: Create database
         run: |
-          cp config/database.ci.yml config/database.yml
-          cat config/database.yml
+          cp .env.ci .env.test
           HANAMI_ENV=test bundle exec hanami db prepare
 
       - name: Run tests

@@ -1,4 +1,4 @@
-RSpec.describe Nintendo::Europe::ImportData, type: :service do
+RSpec.describe ProcessRawInfo, type: :service do
   describe 'Inputs' do
     subject { described_class.inputs }
 
@@ -16,8 +16,8 @@ RSpec.describe Nintendo::Europe::ImportData, type: :service do
 
     it do
       is_expected.to contain_exactly(
-        Nintendo::Europe::FetchData,
-        ProcessRawInfos
+        ImportRawInfo,
+        RegisterEvent
       )
     end
   end
