@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'algoliasearch', '1.27.4'
 gem 'bigdecimal', '1.3.5'
 gem 'deepsort', '0.4.5'
 gem 'enumerate_it', '3.1.0'
