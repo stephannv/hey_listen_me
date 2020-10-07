@@ -9,11 +9,7 @@ class RegisterEvent < Actor
 
     check_if_raw_infos_has_the_same_id
 
-    event_repository.create(
-      type: event_type,
-      raw_info_id: new_raw_info.id,
-      changes: Hashdiff.diff(old_raw_info&.data.to_h, new_raw_info.data.to_h)
-    )
+    event_repository.create(type: event_type, raw_info_id: new_raw_info.id, changes: changes)
   end
 
   private
@@ -28,5 +24,13 @@ class RegisterEvent < Actor
     else
       EventType::UPDATE
     end
+  end
+
+  def changes
+    data_source = new_raw_info.data_source
+    old_data = old_raw_info&.data.to_h.except(*IgnoredKeys::LIST[data_source])
+    new_data = new_raw_info.data.to_h.except(*IgnoredKeys::LIST[data_source])
+
+    Hashdiff.diff(old_data, new_data)
   end
 end

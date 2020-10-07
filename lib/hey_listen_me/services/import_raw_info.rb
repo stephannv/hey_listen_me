@@ -2,7 +2,6 @@ class ImportRawInfo < Actor
   input :data_source, type: String, in: DataSource.list
   input :external_id, type: String
   input :data, type: Hash
-  input :ignored_keys_for_checksum, type: Array, default: []
 
   input :raw_info_repository, type: RawInfoRepository, default: -> { RawInfoRepository.new }
 
@@ -38,6 +37,6 @@ class ImportRawInfo < Actor
   end
 
   def data_checksum
-    @data_checksum ||= Digest::MD5.hexdigest(sorted_data.except(*ignored_keys_for_checksum).to_s)
+    @data_checksum ||= Digest::MD5.hexdigest(sorted_data.except(*IgnoredKeys::LIST[data_source]).to_s)
   end
 end

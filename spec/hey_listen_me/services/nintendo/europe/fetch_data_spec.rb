@@ -13,7 +13,6 @@ RSpec.describe Nintendo::Europe::FetchData, type: :service do
     it { is_expected.to include(data_source: { type: String }) }
     it { is_expected.to include(external_id_key: { type: String }) }
     it { is_expected.to include(raw_data: { type: Array }) }
-    it { is_expected.to include(ignored_keys_for_checksum: { type: Array }) }
   end
 
   describe '#call' do
@@ -39,7 +38,6 @@ RSpec.describe Nintendo::Europe::FetchData, type: :service do
     it 'outputs id_key, platform_id and region_id related with Nintendo Europe data' do
       expect(subject.data_source).to eq DataSource::NINTENDO_EUROPE
       expect(subject.external_id_key).to eq 'fs_id'
-      expect(subject.ignored_keys_for_checksum).to eq %w[_version_ popularity]
     end
   end
 end

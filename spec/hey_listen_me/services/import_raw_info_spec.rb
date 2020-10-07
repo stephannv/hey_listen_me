@@ -2,14 +2,12 @@ RSpec.describe ImportRawInfo, type: :service do
   subject { described_class.new(inputs) }
 
   let(:raw_info_repository) { RawInfoRepository.new }
-  let(:ignored_keys_for_checksum) { [] }
   let(:inputs) do
     temp_raw_info = build(:raw_info)
     {
       data_source: temp_raw_info.data_source,
       external_id: temp_raw_info.checksum,
       data: temp_raw_info.data,
-      ignored_keys_for_checksum: ignored_keys_for_checksum,
       raw_info_repository: raw_info_repository
     }
   end
@@ -151,15 +149,16 @@ RSpec.describe ImportRawInfo, type: :service do
 
     context 'when @data_checksum hasn`t value' do
       let(:data_checksum) { nil }
-      let(:ignored_keys_for_checksum) { [:a] }
+      let(:ignored_keys) { [:a] }
       let(:sorted_data) { { a: 1, b: [2, 3] } }
 
       before do
         allow(subject).to receive(:sorted_data).and_return(a: 1, b: [2, 3])
+        stub_const('IgnoredKeys::LIST', { inputs[:data_source] => ignored_keys })
       end
 
       it 'builds a hash from sorted_data ignoring given keys and sets value to @data_checksum' do
-        expected_checksum = Digest::MD5.hexdigest(sorted_data.except(*ignored_keys_for_checksum).to_s)
+        expected_checksum = Digest::MD5.hexdigest(sorted_data.except(*ignored_keys).to_s)
         expect(subject.send(:data_checksum)).to eq expected_checksum
       end
     end

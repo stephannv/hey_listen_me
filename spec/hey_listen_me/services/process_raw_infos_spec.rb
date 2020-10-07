@@ -7,7 +7,6 @@ RSpec.describe ProcessRawInfos, type: :service do
     it { is_expected.to include(data_source: { type: String, in: DataSource.list }) }
     it { is_expected.to include(external_id_key: { type: String }) }
     it { is_expected.to include(raw_data: { type: Array }) }
-    it { is_expected.to include(ignored_keys_for_checksum: { type: Array, default: [] }) }
   end
 
   describe '#call' do
@@ -19,17 +18,16 @@ RSpec.describe ProcessRawInfos, type: :service do
       {
         data_source: data_source,
         external_id_key: 'nsuid',
-        raw_data: [raw_data_1, raw_data_2],
-        ignored_keys_for_checksum: keys
+        raw_data: [raw_data_1, raw_data_2]
       }
     end
 
     it 'import each raw data' do
       expect(ProcessRawInfo).to receive(:call)
-        .with(data_source: data_source, external_id: 'abc', data: raw_data_1, ignored_keys_for_checksum: keys)
+        .with(data_source: data_source, external_id: 'abc', data: raw_data_1)
         .once
       expect(ProcessRawInfo).to receive(:call)
-        .with(data_source: data_source, external_id: 'def', data: raw_data_2, ignored_keys_for_checksum: keys)
+        .with(data_source: data_source, external_id: 'def', data: raw_data_2)
         .once
 
       subject.call

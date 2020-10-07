@@ -46,10 +46,12 @@ RSpec.describe RegisterEvent, type: :service do
 
     context 'when new raw info is present and old raw info and new raw info has the same id' do
       let(:event_type) { EventType.list.sample }
+      let(:changes) { [Faker::Lorem.word] }
 
       before do
         RawInfoRepository.new.create(build(:raw_info, id: new_raw_info.id))
         allow(subject).to receive(:event_type).and_return(event_type)
+        allow(subject).to receive(:changes).and_return(changes)
       end
 
       it 'creates a new event' do
@@ -60,7 +62,7 @@ RSpec.describe RegisterEvent, type: :service do
         expect(event.id).to_not be_nil
         expect(event.raw_info_id).to eq new_raw_info.id
         expect(event.type).to eq event_type
-        expect(event.changes).to eq Hashdiff.diff(old_raw_info.data.to_h, new_raw_info.data.to_h)
+        expect(event.changes).to eq changes
       end
     end
   end
@@ -78,6 +80,17 @@ RSpec.describe RegisterEvent, type: :service do
       it 'returns update event type' do
         expect(subject.send(:event_type)).to eq EventType::UPDATE
       end
+    end
+  end
+
+  describe '#changes' do
+    let(:old_raw_info) { build(:raw_info, id: raw_info_id, data: { 'a' => 1, 'b' => 1 }) }
+    let(:new_raw_info) { build(:raw_info, id: raw_info_id, data: { 'a' => 9, 'b' => 2 }) }
+
+    before { stub_const('IgnoredKeys::LIST', { new_raw_info.data_source => [:a] }) }
+
+    it 'returns hash diff ignoring keys present in ignored keys list' do
+      expect(subject.send(:changes)).to eq Hashdiff.diff({ 'b' => 1 }, { 'b' => 2 })
     end
   end
 end
