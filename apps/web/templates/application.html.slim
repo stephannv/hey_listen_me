@@ -4,5 +4,20 @@ html
     title
       | Web
     = favicon
-  body
-    = yield
+    = stylesheet 'halfmoon.min'
+
+  body.dark-mode
+    .page-wrapper.with-navbar.with-sidebar.with-navbar-fixed-bottom(data-sidebar-type="overlayed-sm-and-down")
+      .sticky-alerts
+
+      = render partial: 'layouts/navbar'
+
+      = render partial: 'layouts/sidebar'
+
+      .content-wrapper
+        .container-fluid
+          = yield
+
+      .navbar.navbar-fixed-bottom
+
+    = javascript 'halfmoon.min'

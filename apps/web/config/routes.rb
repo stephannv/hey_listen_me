@@ -3,3 +3,5 @@
 #
 # Example:
 # get '/hello', to: ->(env) { [200, {}, ['Hello from Hanami!']] }
+
+resources :raw_infos, only: %i[index show]

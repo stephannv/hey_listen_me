@@ -1,0 +1,11 @@
+.sidebar-overlay(onclick="halfmoon.toogleSidebar()")
+
+.sidebar
+  .sidebar-menu
+    h5.sidebar-title Data
+
+    .sidebar-divider
+
+    = link_to 'Raw Infos', routes.raw_infos_path, class: 'sidebar-link', title: 'Raw Infos'
+
+    a.sidebar-link Events

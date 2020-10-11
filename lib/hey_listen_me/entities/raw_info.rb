@@ -9,5 +9,7 @@ class RawInfo < Hanami::Entity
 
     attribute :created_at, Types::DateTime
     attribute :updated_at, Types::DateTime
+
+    attribute :events, Types::Collection(Event)
   end
 end

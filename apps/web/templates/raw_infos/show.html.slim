@@ -1,0 +1,46 @@
+.content
+  h1.content-title.font-size-24 Raw Info
+
+.content
+  .card.m-0
+    .card-title.mb-10 = raw_info.id
+
+    .mb-5
+      .font-weight-bold.d-block Data Source
+      = DataSource.humanize(raw_info.data_source)
+
+    .mb-5
+      .font-weight-bold.d-block Imported at
+      = time_distance_with_date(raw_info.created_at)
+
+
+    .mb-5
+      .font-weight-bold.d-block Last update
+      = time_distance_with_date(raw_info.updated_at)
+
+    .mb-5
+      .font-weight-bold.d-block Checksum
+      = raw_info.checksum
+
+    .collapse-group
+      details.collapse-panel
+        summary.collapse-header
+          strong.d-block Data
+        .collapse-content
+          p oi
+
+      details.collapse-panel
+        summary.collapse-header
+          strong.d-block Updates
+        .collapse-content
+          table.table
+            theader
+              th ID
+              th Type
+              th Created At
+            tbody
+              - raw_info.events.each do |event|
+                tr
+                  td = event.id
+                  td = event.type
+                  td = event.created_at

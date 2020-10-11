@@ -1,0 +1,19 @@
+h1.content-title Raw Infos
+
+table.table
+  thead
+    tr
+      th #
+      th Data Source
+      th Checksum
+      th Created At
+      th Updated At
+
+  tbody
+    - raw_infos.each do |raw_info|
+      tr
+        th = raw_info.id
+        td = raw_info.data_source
+        td = raw_info.checksum
+        td = raw_info.created_at
+        td = raw_info.updated_at
