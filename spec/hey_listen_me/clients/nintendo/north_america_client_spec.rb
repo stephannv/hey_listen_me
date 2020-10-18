@@ -36,7 +36,7 @@ RSpec.describe Nintendo::NorthAmericaClient, type: :clients do
       context 'when @index_asc is nil' do
         before do
           subject.instance_variable_set('@index_asc', nil)
-          allow(client).to receive(:init_index).with('noa_aem_game_en_us_title_asc').and_return(index)
+          allow(client).to receive(:init_index).with('ncom_game_en_us_title_asc').and_return(index)
         end
 
         it 'returns a algolia index with release date desc' do
@@ -65,7 +65,7 @@ RSpec.describe Nintendo::NorthAmericaClient, type: :clients do
       context 'when @index_desc is nil' do
         before do
           subject.instance_variable_set('@index_desc', nil)
-          allow(client).to receive(:init_index).with('noa_aem_game_en_us_title_des').and_return(index)
+          allow(client).to receive(:init_index).with('ncom_game_en_us_title_des').and_return(index)
         end
 
         it 'returns a algolia index with release date desc' do

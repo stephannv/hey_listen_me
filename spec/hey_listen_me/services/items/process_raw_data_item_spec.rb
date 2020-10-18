@@ -1,4 +1,4 @@
-RSpec.describe Nintendo::Europe::ImportRawData, type: :service do
+RSpec.describe Items::ProcessRawDataItem, type: :service do
   describe 'Inputs' do
     subject { described_class.inputs }
 
@@ -15,7 +15,7 @@ RSpec.describe Nintendo::Europe::ImportRawData, type: :service do
     subject { described_class.play_actors.map(&:values).flatten }
 
     it do
-      is_expected.to contain_exactly(Nintendo::Europe::FetchRawData, RawData::ImportRawDataCollection)
+      is_expected.to contain_exactly(Items::CreateItem, Items::CreateItemChangelog)
     end
   end
 end

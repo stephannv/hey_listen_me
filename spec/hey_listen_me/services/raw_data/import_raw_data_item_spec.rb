@@ -1,4 +1,4 @@
-RSpec.describe RawData::ProcessItem, type: :service do
+RSpec.describe RawData::ImportRawDataItem, type: :service do
   describe 'Inputs' do
     subject { described_class.inputs }
 
@@ -15,7 +15,7 @@ RSpec.describe RawData::ProcessItem, type: :service do
     subject { described_class.play_actors.map(&:values).flatten }
 
     it do
-      is_expected.to contain_exactly(RawData::CreateItem, RawData::CreateChangelog)
+      is_expected.to contain_exactly(RawData::CreateRawDataItem, RawData::CreateChangelog)
     end
   end
 end

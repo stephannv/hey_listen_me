@@ -9,7 +9,7 @@ module Nintendo
 
       def call
         self.data_source = DataSource::NINTENDO_BRASIL
-        self.external_id_key = 'identifier'
+        self.external_id_key = 'provider_identifier'
         self.raw_data = crawler.crawl(country: :brasil)
       end
     end

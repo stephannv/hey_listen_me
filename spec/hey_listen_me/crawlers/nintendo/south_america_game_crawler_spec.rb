@@ -41,10 +41,10 @@ RSpec.describe Nintendo::SouthAmericaGameCrawler, type: :crawler do
 
       before do
         allow(page).to receive(:css).with('div.category-product-item').and_return([el])
-        allow(subject).to receive(:crawl_identifier).with(el).and_return('123')
+        allow(subject).to receive(:crawl_provider_identifier).with(el).and_return('123')
         allow(subject).to receive(:crawl_title).with(el).and_return('My Game')
         allow(subject).to receive(:crawl_release_date).with(el).and_return('01/01/2020')
-        allow(subject).to receive(:crawl_image).with(el).and_return('https://example.com/image.png')
+        allow(subject).to receive(:crawl_main_image_url).with(el).and_return('https://example.com/image.png')
         allow(subject).to receive(:crawl_website_url).with(el).and_return('https://example.com')
         allow(subject).to receive(:crawl_dlc_availability).with(el).and_return(true)
         allow(subject).to receive(:crawl_demo_availability).with(el).and_return(true)
@@ -54,22 +54,23 @@ RSpec.describe Nintendo::SouthAmericaGameCrawler, type: :crawler do
         data = subject.send(:crawl_data, page: page)
 
         expected_data = [{
-          'item_type' => 'game',
-          'identifier' => '123',
-          'nsuid' => '',
+          'platform' => 'nintendo_switch',
+          'data_source' => DataSource::NINTENDO_BRASIL,
+          'item_type' => ItemType::GAME,
+          'provider_identifier' => '123',
           'title' => 'My Game',
-          'released_at' => Date.parse('01/01/2020').to_s,
-          'pretty_release_date' => '01/01/2020',
-          'image_url' => 'https://example.com/image.png',
+          'release_date' => Date.parse('01/01/2020').to_s,
+          'release_date_text' => '01/01/2020',
+          'main_image_url' => 'https://example.com/image.png',
           'website_url' => 'https://example.com',
-          'data' => { 'is_dlc_available' => true, 'is_demo_available' => true }
+          'extra' => { 'is_dlc_available' => true, 'is_demo_available' => true }
         }]
 
         expect(data).to eq expected_data
       end
     end
 
-    describe '#crawl_identifier' do
+    describe '#crawl_provider_identifier' do
       let(:el) { double }
 
       before do
@@ -79,7 +80,7 @@ RSpec.describe Nintendo::SouthAmericaGameCrawler, type: :crawler do
       end
 
       it 'returns identifier' do
-        expect(subject.send(:crawl_identifier, el)).to eq '123'
+        expect(subject.send(:crawl_provider_identifier, el)).to eq '123'
       end
     end
 
@@ -111,7 +112,7 @@ RSpec.describe Nintendo::SouthAmericaGameCrawler, type: :crawler do
       end
     end
 
-    describe '#crawl_image' do
+    describe '#crawl_main_image_url' do
       let(:el) { double }
 
       before do
@@ -121,7 +122,7 @@ RSpec.describe Nintendo::SouthAmericaGameCrawler, type: :crawler do
       end
 
       it 'returns image' do
-        expect(subject.send(:crawl_image, el)).to eq 'example.com/image.png'
+        expect(subject.send(:crawl_main_image_url, el)).to eq 'example.com/image.png'
       end
     end
 

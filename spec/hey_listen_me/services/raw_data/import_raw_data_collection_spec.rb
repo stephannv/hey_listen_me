@@ -1,4 +1,4 @@
-RSpec.describe RawData::Process, type: :service do
+RSpec.describe RawData::ImportRawDataCollection, type: :service do
   subject { described_class.new(inputs) }
 
   describe 'Inputs' do
@@ -23,10 +23,10 @@ RSpec.describe RawData::Process, type: :service do
     end
 
     it 'import each raw data' do
-      expect(RawData::ProcessItem).to receive(:call)
+      expect(RawData::ImportRawDataItem).to receive(:call)
         .with(data_source: data_source, external_id: 'abc', data: raw_data_1)
         .once
-      expect(RawData::ProcessItem).to receive(:call)
+      expect(RawData::ImportRawDataItem).to receive(:call)
         .with(data_source: data_source, external_id: 'def', data: raw_data_2)
         .once
 

@@ -32,7 +32,7 @@ RSpec.describe Nintendo::SouthAmerica::FetchRawGameData, type: :service do
 
     it 'outputs id_key, platform_id and region_id related with Nintendo South America data' do
       expect(subject.data_source).to eq DataSource::NINTENDO_BRASIL
-      expect(subject.external_id_key).to eq 'identifier'
+      expect(subject.external_id_key).to eq 'provider_identifier'
     end
   end
 end

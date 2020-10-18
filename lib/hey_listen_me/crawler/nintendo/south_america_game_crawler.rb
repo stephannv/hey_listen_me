@@ -20,15 +20,16 @@ module Nintendo
     def crawl_data(page:)
       page.css('div.category-product-item').map do |el|
         {
-          'item_type' => 'game',
-          'identifier' => crawl_identifier(el),
-          'nsuid' => '',
+          'platform' => 'nintendo_switch',
+          'data_source' => DataSource::NINTENDO_BRASIL,
+          'item_type' => ItemType::GAME,
+          'provider_identifier' => crawl_provider_identifier(el),
           'title' => crawl_title(el),
-          'released_at' => crawl_release_date(el).nil? ? '' : Date.parse(crawl_release_date(el)).to_s,
-          'pretty_release_date' => crawl_release_date(el),
-          'image_url' => crawl_image(el),
+          'release_date' => crawl_release_date(el).nil? ? '' : Date.parse(crawl_release_date(el)).to_s,
+          'release_date_text' => crawl_release_date(el),
+          'main_image_url' => crawl_main_image_url(el),
           'website_url' => crawl_website_url(el),
-          'data' => {
+          'extra' => {
             'is_dlc_available' => crawl_dlc_availability(el),
             'is_demo_available' => crawl_demo_availability(el)
           }
@@ -37,7 +38,7 @@ module Nintendo
     end
     # rubocop:enable Metrics/MethodLength
 
-    def crawl_identifier(element)
+    def crawl_provider_identifier(element)
       element.css('div.category-product-item-title div.price-box').first[:'data-product-id']
     end
 
@@ -49,7 +50,7 @@ module Nintendo
       element.css('div.category-product-item-title a').first[:href]
     end
 
-    def crawl_image(element)
+    def crawl_main_image_url(element)
       element.css('div.category-product-item-img a.photo span span img').first[:src]
     end
 

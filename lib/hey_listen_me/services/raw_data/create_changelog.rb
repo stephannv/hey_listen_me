@@ -10,7 +10,7 @@ module RawData
     def call
       return if new_raw_data_item.nil?
 
-      check_if_raw_data_items_has_the_same_id
+      check_if_raw_data_items_have_the_same_id
 
       raw_data_changelog_repository.create(
         event_type: event_type,
@@ -21,7 +21,7 @@ module RawData
 
     private
 
-    def check_if_raw_data_items_has_the_same_id
+    def check_if_raw_data_items_have_the_same_id
       raise 'DIFFERENT RAW DATA ITEMS' if old_raw_data_item && old_raw_data_item.id != new_raw_data_item.id
     end
 

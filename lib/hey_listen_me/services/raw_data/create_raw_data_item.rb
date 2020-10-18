@@ -1,5 +1,5 @@
 module RawData
-  class CreateItem < Actor
+  class CreateRawDataItem < Actor
     input :data_source, type: String, in: DataSource.list
     input :external_id, type: String
     input :data, type: Hash
@@ -10,7 +10,7 @@ module RawData
     output :new_raw_data_item, type: RawDataItem, allow_nil: true
 
     def call
-      raw_data_item = repository.by_data_source_and_external_id(data_source: data_source, external_id: external_id)
+      raw_data_item = repository.find_by_data_source_and_external_id(data_source: data_source, external_id: external_id)
       self.old_raw_data_item = raw_data_item
       self.new_raw_data_item = if raw_data_item.nil?
         create_raw_data_item

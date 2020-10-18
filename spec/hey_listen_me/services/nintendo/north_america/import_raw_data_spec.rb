@@ -15,7 +15,7 @@ RSpec.describe Nintendo::NorthAmerica::ImportRawData, type: :service do
     subject { described_class.play_actors.map(&:values).flatten }
 
     it do
-      is_expected.to contain_exactly(Nintendo::NorthAmerica::FetchRawData, RawData::Process)
+      is_expected.to contain_exactly(Nintendo::NorthAmerica::FetchRawData, RawData::ImportRawDataCollection)
     end
   end
 end

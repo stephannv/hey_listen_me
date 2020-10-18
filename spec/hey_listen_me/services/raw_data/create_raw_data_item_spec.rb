@@ -1,4 +1,4 @@
-RSpec.describe RawData::CreateItem, type: :service do
+RSpec.describe RawData::CreateRawDataItem, type: :service do
   subject { described_class.new(inputs) }
 
   let(:raw_data_item_repository) { RawDataItemRepository.new }
@@ -33,7 +33,7 @@ RSpec.describe RawData::CreateItem, type: :service do
   describe '#call' do
     context 'when raw_data_item from given data_source with given external_id isn`t found' do
       before do
-        allow(raw_data_item_repository).to receive(:by_data_source_and_external_id)
+        allow(raw_data_item_repository).to receive(:find_by_data_source_and_external_id)
           .with(inputs.slice(:data_source, :external_id))
           .and_return(nil)
       end
@@ -50,7 +50,7 @@ RSpec.describe RawData::CreateItem, type: :service do
       let(:raw_data_item) { build(:raw_data_item) }
 
       before do
-        allow(raw_data_item_repository).to receive(:by_data_source_and_external_id)
+        allow(raw_data_item_repository).to receive(:find_by_data_source_and_external_id)
           .with(inputs.slice(:data_source, :external_id))
           .and_return(raw_data_item)
       end

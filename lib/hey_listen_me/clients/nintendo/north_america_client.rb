@@ -13,11 +13,11 @@ module Nintendo
     end
 
     def index_asc
-      @index_asc ||= @client.init_index('noa_aem_game_en_us_title_asc')
+      @index_asc ||= @client.init_index('ncom_game_en_us_title_asc')
     end
 
     def index_desc
-      @index_desc ||= @client.init_index('noa_aem_game_en_us_title_des')
+      @index_desc ||= @client.init_index('ncom_game_en_us_title_des')
     end
   end
 end
